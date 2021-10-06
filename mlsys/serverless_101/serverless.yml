@@ -1,0 +1,26 @@
+frameworkVersion: ">=2.55.0"
+
+service: free-7773-lambdas
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: dev
+  region: us-west-2
+
+functions:
+  simple_regression:
+    handler: handler.simple_regression
+    environment:
+      BETA: 16.716
+      INTERCEPT: -0.092
+    memorySize: 1024
+    timeout: 5
+    events:
+      - http:
+          path: /simple_regression
+          method: get
+          cors: true
+
+#plugins:
+#  - serverless-python-requirements

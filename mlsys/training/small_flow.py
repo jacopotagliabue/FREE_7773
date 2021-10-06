@@ -7,6 +7,8 @@ and it does NOT necessarely reflect all best practices.
 
 Please refer to the slides and our discussion for further context.
 
+MAKE SURE TO RUN THIS WITH METAFLOW LOCAL FIRST
+
 """
 
 
@@ -26,7 +28,9 @@ class SampleRegressionFlow(FlowSpec):
     and training a model successfully.
     """
     
-    # if a static file is part of the flow, it can be called in any downstream process, gets versioned etc.
+    # if a static file is part of the flow, 
+    # it can be called in any downstream process,
+    # gets versioned etc.
     # https://docs.metaflow.org/metaflow/data#data-in-local-files
     DATA_FILE = IncludeFile(
         'dataset',
@@ -108,7 +112,7 @@ class SampleRegressionFlow(FlowSpec):
     @step 
     def test_model(self):
         """
-        Test the model on the held out sample
+        Test the model on the hold out sample
         """
         from sklearn import metrics
 
@@ -116,6 +120,9 @@ class SampleRegressionFlow(FlowSpec):
         self.mse = metrics.mean_squared_error(self.y_test, self.y_predicted)
         self.r2 = metrics.r2_score(self.y_test, self.y_predicted)
         print('MSE is {}, R2 score is {}'.format(self.mse, self.r2))
+        # print out a test prediction
+        test_predictions = self.model.predict([[10]])
+        print("Test prediction is {}".format(test_predictions))
         # all is done go to the end
         self.next(self.end)
 
