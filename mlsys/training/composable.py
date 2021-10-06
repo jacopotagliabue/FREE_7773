@@ -1,7 +1,7 @@
 """
 
 Simple stand-alone script showing end-to-end training of a regression model. This script mimics
-an implementation in which break down the monolith script into logical steps. This script
+an implementation in which we break down the monolith script into logical steps. This script
 has been created for pedagogical purposes, and it does NOT reflect best practices.
 
 Please refer to the slides and our discussion for further context.
@@ -82,6 +82,9 @@ def train_model(splits: Splits, is_debug: bool=True) -> Regression:
 
 
 def plot_points(y_predicted: list, y_test: list, plot_name: str) -> None:
+    """
+    Plot actual vs predicted and save the figure to disk
+    """
     fig, ax = plt.subplots()
     ax.scatter(y_predicted, y_test, edgecolors=(0, 0, 1))
     ax.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], 'r--', lw=3)
@@ -110,7 +113,7 @@ def evaluate_model(model: linear_model, splits: Splits,  with_plot: bool=True, i
 
 
 def composable_script(file_name: str, test_size: float=0.20):
-    # all done
+    # starting up!
     print("Starting up at {}".format(datetime.utcnow()))
     # read the data into a tuple
     dataset = load_data(file_name)
