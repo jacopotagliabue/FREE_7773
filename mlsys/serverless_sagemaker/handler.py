@@ -47,7 +47,7 @@ def sagemaker_regression(event, context):
     
     You can call this with:
 
-    https://XXX.execute-api.us-west-2.amazonaws.com/dev/simple_regression?x=10
+    https://XXX.execute-api.us-west-2.amazonaws.com/dev/sagemaker_regression?x=10
     """
     # start a timer
     start = time.time()
