@@ -17,8 +17,8 @@ import os
 
 
 # make sure we are running Metaflow with S3 for this script
-# assert os.environ['METAFLOW_DEFAULT_DATASTORE'] != 'local'
-# assert os.environ['METAFLOW_DEFAULT_ENVIRONMENT'] != 'local'
+assert os.environ['METAFLOW_DEFAULT_DATASTORE'] != 'local'
+assert os.environ['METAFLOW_DEFAULT_ENVIRONMENT'] != 'local'
 
 
 class SampleRegressionFlowDeploy(FlowSpec):
