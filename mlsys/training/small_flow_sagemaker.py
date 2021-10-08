@@ -11,14 +11,14 @@ MAKE SURE TO RUN THIS WITH METAFLOW S3 DATASTORE, so that we can upload the arti
 """
 
 
-from metaflow import FlowSpec, step, Parameter, IncludeFile, current
+from metaflow import FlowSpec, step, Parameter, IncludeFile, current, S3
 from datetime import datetime
 import os
 
 
 # make sure we are running Metaflow with S3 for this script
-assert os.environ['METAFLOW_DEFAULT_DATASTORE'] != 'local'
-assert os.environ['METAFLOW_DEFAULT_ENVIRONMENT'] != 'local'
+# assert os.environ['METAFLOW_DEFAULT_DATASTORE'] != 'local'
+# assert os.environ['METAFLOW_DEFAULT_ENVIRONMENT'] != 'local'
 
 
 class SampleRegressionFlowDeploy(FlowSpec):
@@ -117,10 +117,51 @@ class SampleRegressionFlowDeploy(FlowSpec):
 
     @step
     def deploy_model_to_sagemaker(self):
-        # TODO: add step to deploy the artifact to sagemaker
-        # first, tar the model and upload to s3 using metaflow, 
-        # then create an endpoint and verify it works
-        # https://sagemaker.readthedocs.io/en/stable/frameworks/sklearn/using_sklearn.html#deploy-endpoints-from-model-data
+        """
+        Deploy trained model on SageMaker
+        """
+        import os
+        import time
+        import joblib
+        import shutil
+        import tarfile
+        from sagemaker.sklearn import SKLearnModel
+
+
+        model_name = "model"
+        local_tar_name = "model.tar.gz"
+
+        os.makedirs(model_name, exist_ok=True)
+        # save model to local folder
+        joblib.dump(self.model, "{}/{}.joblib".format(model_name, model_name))
+        # save model as tar.gz
+        with tarfile.open(local_tar_name, mode="w:gz") as _tar:
+            _tar.add(model_name, recursive=True)
+        # save model onto S3
+        with S3(run=self) as s3:
+            with open(local_tar_name, "rb") as in_file:
+                data = in_file.read()
+                self.model_s3_path = s3.put(local_tar_name, data)
+                print('Model saved at {}'.format(self.model_s3_path))
+        # remove local model folder and tar
+        shutil.rmtree(model_name)
+        os.remove(local_tar_name)
+        # initialize SageMaker SKLearn Model
+        sklearn_model = SKLearnModel(model_data=self.model_s3_path,
+                                     role="MetaSageMakerRole",
+                                     entry_point='sagemaker_entrypoint_script.py',
+                                     framework_version='0.23-1')
+        endpoint_name = 'regression-endpoint-{}'.format(int(round(time.time() * 1000)))
+        print("\n\n================\nEndpoint name is: {}\n\n".format(endpoint_name))
+        # deploy model
+        predictor = sklearn_model.deploy(instance_type="ml.t2.medium",
+                                         initial_instance_count=1,
+                                         endpoint_name=endpoint_name)
+        # prepare a test input and check response
+        test_inp = [[10]]
+        result = predictor.predict(test_inp)
+        print(result)
+
         self.next(self.end)
 
     @step
