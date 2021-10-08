@@ -3,11 +3,12 @@ from typing import Dict, Any
 import time
 import json
 import os
+import boto3
 
 
-# read in the params for regression
-BETA = float(os.environ['BETA'])
-INTERCEPT = float(os.environ['INTERCEPT'])
+# instantiate AWS client for invoking sagemaker endpoint
+runtime = boto3.client('sagemaker-runtime')
+SAGEMAKER_ENDPOINT_NAME = os.getenv('SAGEMAKER_ENDPOINT_NAME')
 
 
 def wrap_response(status_code: int,
@@ -28,17 +29,27 @@ def wrap_response(status_code: int,
         'body': json.dumps(body),
     }
 
+def get_response_from_sagemaker(model_input: list,
+                                endpoint_name: str,
+                                content_type: str = 'application/json') -> list:
+    # get raw response from sagemaker
+    response = runtime.invoke_endpoint(EndpointName=endpoint_name,
+                                       ContentType=content_type,
+                                       Body=json.dumps(model_input))
+    # return the response body, properly decoded
+    return json.loads(response['Body'].read().decode())
 
 def run_regression(Xs: list) -> list:
     """
-    For each input, we run a regression as 
-
-    y = BETA * X + INTERCEPT
+    Invoke regression model hosted on SageMaker
     """
     if not Xs:
         return None
 
-    return [INTERCEPT + (BETA * x)  for x in Xs]
+    response = get_response_from_sagemaker(model_input=Xs,
+                                           endpoint_name=SAGEMAKER_ENDPOINT_NAME,
+                                           content_type='application/json')
+    return response
 
 
 def sagemaker_regression(event, context):
@@ -56,7 +67,7 @@ def sagemaker_regression(event, context):
     # read parameters
     params = event.get('queryStringParameters', {})
     # get Xs as a list from a parameter called x
-    Xs = [float(x) for x in params['x'].split(',')] if 'x' in params else None
+    Xs = [[float(x)] for x in params['x'].split(',')] if 'x' in params else None
     predictions = run_regression(Xs)
     # be civilized: wrap the response around some useful data
     response_body = {

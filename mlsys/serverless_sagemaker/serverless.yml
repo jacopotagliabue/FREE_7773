@@ -10,6 +10,8 @@ provider:
 
 functions:
   simple_regression:
+    environment:
+      SAGEMAKER_ENDPOINT_NAME: ${env:SAGEMAKER_ENDPOINT_NAME}
     handler: handler.sagemaker_regression
     memorySize: 1024
     timeout: 5
@@ -18,4 +20,18 @@ functions:
           path: /sagemaker_regression
           method: get
           cors: true
-
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - sagemaker:InvokeEndpoint
+        Resource:
+          Fn::Join:
+            - ':'
+            - - arn
+              - aws
+              - sagemaker
+              - Ref: AWS::Region
+              - Ref: AWS::AccountId
+              - endpoint/${env:SAGEMAKER_ENDPOINT_NAME}
+plugins:
+  - serverless-iam-roles-per-function
