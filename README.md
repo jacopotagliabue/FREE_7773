@@ -3,6 +3,7 @@ Repo containing material for the NYU class (Master of Engineering) I teach on NL
 
 This repo is a WIP: check back often for updates, documentation, new slides etc.
 
+Last update: Fall 2021.
 
 ## Prequisites: Dependencies
 
@@ -36,8 +37,10 @@ TBC
 
 
 ### Slides
-TBC
 
+The folder contains slides discussed during the course: while they provide a guide and a general overview of the concepts, the discussions we have during lectures are very important to put the material in the right context.
+
+Note that, with time, links and references may become obsolete despite my best intentions!
 
 ### Playground
 
