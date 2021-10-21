@@ -33,8 +33,12 @@ TBC
 
 
 ### Notebooks
-TBC
 
+This folder contains Python notebooks that illustrate in Python concepts discussed during the lectures.
+Please note that notebooks are inherently "exploratory" in nature, so they are good for interactivity and speed but they are not always the right tool for rigorous coding. 
+
+Note: most of the dependencies are pretty standard, but some of the "exotic" ones are added with inline 
+statements to make the notebook self-contained.
 
 ### Slides
 
@@ -44,7 +48,8 @@ Note that, with time, links and references may become obsolete despite my best i
 
 ### Playground
 
-This
+This folder contains simple throw-away scripts useful to test specific tools, like for example logging
+experiments in a remote dashboard, connecting to the cloud, etc. Script-specific info are below.
 
 ##### Comet playground
 
