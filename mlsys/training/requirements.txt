@@ -1,3 +1,4 @@
 scikit-learn==0.23.1
 metaflow==2.3.6
 sagemaker==2.59.8
+matplotlib==3.4.3

@@ -15,6 +15,8 @@ from sklearn import linear_model, metrics
 
 
 def monolith():
+    print("Starting the process!")
+
     # read the data in and split it
     Xs = []
     Ys = []
