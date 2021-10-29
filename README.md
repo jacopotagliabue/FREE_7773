@@ -42,7 +42,7 @@ statements to make the notebook self-contained.
 
 ### Slides
 
-The folder contains slides discussed during the course: while they provide a guide and a general overview of the concepts, the discussions we have during lectures are very important to put the material in the right context. While numbers in the files follow the order of the lectures as they happened in class, after the first intro lecture the NLP and MLSys are relatively independent.
+The folder contains slides discussed during the course: while they provide a guide and a general overview of the concepts, the discussions we have during lectures are very important to put the material in the right context. While numbers in the files follow the order of the lectures as they happened in class, after the first intro lecture the NLP and MLSys "curricula" relatively independent.
 
 Note that, with time, links and references may become obsolete despite my best intentions!
 
