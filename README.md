@@ -1,5 +1,6 @@
 # FREE_7773
-Repo containing material for the NYU class (Master of Engineering) I teach on NLP, ML Sys etc.
+Repo containing material for the NYU class (Master of Engineering) I teach on NLP, ML Sys etc. For context on what the class is trying to achieve and, *especially* what is NOT, please refer
+to the introductory slides in the relevant folder.
 
 This repo is a WIP: check back often for updates, documentation, new slides etc.
 
@@ -22,13 +23,35 @@ then activating it and installing the required dependencies:
 
 ## Repo Structure
 
-TBC
+The repo is organized by folder: each folder contains either resources - e.g. text corpora or slides - or Python programs, divided by type. 
+
+As far as ML is concerned, language-related topics are typically covered through notebooks, MLSys-related concepts are covered through Python scripts (not surprisingly!).
 
 ### Data
-TBC
+
+The folder contains some ready-made text files to experiment with some NLP techniques: these corpora are just examples, and everything can be pretty much run in the same fashion if you swap these files (and change the appropriate variables) with other textual data you like better.
 
 
 ### MLSys
+
+This folder contains script covering MLSys concepts: how to organize a ML project, how to publish a model in the cloud etc.. In particular:
+
+* _serverless_101_ contains a vanilla AWS Lambda endpoint computing explicitely the Y value of a regression model starting from an X input provided by the client. 
+* _serverless_sagemaker_ contains an AWS Lambda endpoint which uses a Sagemaker internal endpoint to serve a scikit-model, previously trained (why two endpoints? Check the slides!).
+* _training_: contains a sequence of scripts taking a program training a regression model and progressively refactoring to follow industry best-practices (i.e. using Metaflow!).
+
+For more info on each of these topics, please see the slides and the sub-sections below.
+
+#### Serverless 101
+
+TBC
+
+#### Serverless Sagemaker
+
+TBC
+
+#### Training scripts
+
 TBC
 
 
@@ -67,4 +90,4 @@ TBC
 
 ## Contacts
 
-TBC
+For questions, feedback, comments, please drop me a message at: `jacopo dot tagliabue at nyu.edu`.
