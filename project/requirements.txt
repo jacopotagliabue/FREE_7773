@@ -1,0 +1,5 @@
+scikit-learn==0.23.1
+metaflow==2.3.6
+flask==2.0.2
+datasets==1.16.1
+BackTranslation==0.3.1

@@ -1,7 +1,11 @@
 # FREE_7773
 Repo containing material for the NYU class (Master of Engineering) I teach on NLP, ML Sys etc. For context on what the class is trying to achieve and, *especially* what is NOT, please refer to the slides in the relevant folder.
 
-Last update: Fall 2021.
+Last update: December 2021.
+
+Notes:
+
+* for unforseen issues with user permissions in the AWS Academy, the original serverless deployment we explained for MLSys could not be used. While the code is still in this repo for someone who wants to try with their own account, a local Flask app serving a model is provided as an alternative in the _project_ folder.
 
 ## Prequisites: Dependencies
 
@@ -80,7 +84,12 @@ statements to make the notebook self-contained.
 
 ### Project
 
-TBC
+This folder contains two main files:
+
+* `my_flow.py` is a Metaflow version of the text classification pipeline we explained in class: while not necessarily exhaustive, it contains many of the features that the final course project should display (e.g. comments, qualitative tests, etc.). The flow ends by explictely storing the artifacts from the model we just trained.
+* `my_app.py` shows how to build a minimal Flask app with a `/predict` endpoint serving predictions from the model. Note that the app relies on a small HTML page, while our lecture described an endpoint as a purely machine-to-machine communication (that is, outputting a JSON): both are fine for the final project, as long as you understand what the app is doing.
+
+You can run both by creating a separate environment with the provided `requirements.txt` (make sure your Metaflow setup is correct, of course).
 
 ### Slides
 
@@ -93,8 +102,7 @@ experiments in a remote dashboard, connecting to the cloud, etc. Script-specific
 
 ##### Comet playground
 
-The file `comet_playground.py` is a simple adaptation of Comet onboarding script for sklearn: if run correctly,
-the Comet dashboard should start displaying experiments under the chosen project name.
+The file `comet_playground.py` is a simple adaptation of Comet onboarding script for sklearn: if run correctly, the Comet dashboard should start displaying experiments under the chosen project name.
  
 Make sure to set `COMET_API_KEY` and `MY_PROJECT_NAME` as env variables before running the script.
 
@@ -105,7 +113,7 @@ Thanks to all outstanding people quoted and linked in the slides: this course is
 * Meninder Purewal, for being such a great, patient, witty co-teacher of this class;
 * Patrick John Chia, for debugging sci-kit on Sagemaker and build the related flow;
 * Ciro Greco, for helping reviewing the NLP slides and greatly improving the scholarly references;
-* Tal Linzen, for sharing some of his NLP teaching ideas with me.
+* Federico Bianchi and Tal Linzen, for sharing their wisdom in teaching NLP.
 
 ## Additional materials
 
@@ -113,7 +121,7 @@ The two main topics - MLSys and NLP - are huge, and we could obviously just scra
 
 * [Deep Learning with Python](https://www.amazon.com/Learning-Python-Second-Fran%C3%A7ois-Chollet/dp/1617296864): great practical intro to ML concepts and the basics of DL;
 * [Speech and Language Processing](https://web.stanford.edu/~jurafsky/slp3/): a great, modern book on NLP; 
-* [You don't need a bigger boat](https://github.com/jacopotagliabue/you-dont-need-a-bigger-boat): our own fully open source repository showing how state-of-the-art ML systems can be built at scale, component after component.
+* [You Don't Need a Bigger Boat](https://github.com/jacopotagliabue/you-dont-need-a-bigger-boat): our own fully open source repository showing how state-of-the-art ML systems can be built at scale, component after component.
 
 ## Contacts
 

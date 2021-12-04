@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Financial News Classifier</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<script type="text/javascript">
+
+    $(function() {
+        $('#predict').click(function() {
+            event.preventDefault();
+            var form_data = new FormData($('#myform')[0]);
+            console.log(form_data);
+            $.ajax({
+                type: 'POST',
+                url: '/',
+                data: form_data,
+                contentType: false,
+                processData: false,
+            }).done(function(data, textStatus, jqXHR){
+                $('#result').text(data);
+            }).fail(function(data){
+                alert('error!');
+            });
+        });
+    }); 
+
+</script>
+<body>
+	<h1>Financial News Classifier</h1>
+	<form id="myform" method="POST">
+		<input type="text" name="sl" placeholder="Enter Sentence for classification"><br>
+	</form>
+	<button id="predict">Predict</button>
+	<h2 id="result"></h2>
+</body>
+</html>
