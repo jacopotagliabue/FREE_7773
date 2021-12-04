@@ -137,6 +137,8 @@ class FinanceNewsFlow(FlowSpec):
         Test the model on the held out sample
 
         TODO: add confusion matrix and a plot!
+
+        TODO: sends a summary of these metrics to Comet to make sure we track them!
         """
         from flow_utils import evaluate_model_performance
 
