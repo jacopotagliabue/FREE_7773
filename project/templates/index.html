@@ -29,8 +29,13 @@
 <body>
 	<h1>Financial News Classifier</h1>
 	<form id="myform" method="POST">
-		<input type="text" name="sl" placeholder="Enter Sentence for classification"><br>
+		<input type="text" name="sl" style="width: 640px;" placeholder="Enter a sentence without punctuation!"><br>
 	</form>
+    <p>
+        Example: <em>
+            Pharmaceuticals group Orion Corp reported a fall in its third-quarter earnings
+        </em>
+    </p>
 	<button id="predict">Predict</button>
 	<h2 id="result"></h2>
 </body>

@@ -14,7 +14,8 @@ import numpy as np
 # By assigning parameters as static folder name,templates folder name
 app = Flask(__name__, static_folder='static', template_folder='templates')
 # We need to load the pickled model file AND the vectorizer to transform the text 
-# to make a prediction on an unseen data point
+# to make a prediction on an unseen data point - note that the script assumes the pickled files are in
+# the samee folder
 vectorizer = pickle.load(open('vectorizer.pkl','rb+'))
 model = pickle.load(open('model.pkl','rb+'))
 
@@ -26,18 +27,19 @@ def main():
     return render_template('index.html')
   # on POST we make a prediction over the input text supplied by the user
   if request.method=='POST':
-    # Converting all the form values to float and making them append in a list(features)
-    features=[float(x) for x in request.form.values()]
-    # Debug: check we have the right input
-    print(features)
-    # Predicting the label for the features collected
-    labels=model.predict([features])
-    # Printing the labels array for debug purpose
+    # debug
+    # print(request.form.keys())
+    input_sentence = request.form['sl']
+    # make sure we lower case it
+    final_sentence = input_sentence.lower()
+    # debug
+    # print(final_sentence)
+    vectorized_sentence = vectorizer.transform([final_sentence])
+    labels = model.predict(vectorized_sentence)
+    #  debug
     print(labels)
-    # Storing the result from the labels array
-    species=labels[0]
     # Returning the response to ajax	
-    return s
+    return "Predicted label is {}".format(labels[0])
     
 if __name__=='__main__':
   # Run the Flask app to run the server

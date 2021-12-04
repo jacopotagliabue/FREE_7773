@@ -194,7 +194,11 @@ class FinanceNewsFlow(FlowSpec):
 
         Hint: is there a better way of doing this than pickling feature prep and model in two files? ;-)
         """
+        import pickle
+        import os
 
+        pickle.dump(self.vectorizer, open(os.path.join(self.FINAL_FOLDER, 'vectorizer.pkl'), 'wb+'))
+        pickle.dump(self.trained_model, open(os.path.join(self.FINAL_FOLDER, 'model.pkl'), 'wb+'))
         # go to the end
         self.next(self.end)
 
