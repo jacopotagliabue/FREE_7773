@@ -1,8 +1,5 @@
 # FREE_7773
-Repo containing material for the NYU class (Master of Engineering) I teach on NLP, ML Sys etc. For context on what the class is trying to achieve and, *especially* what is NOT, please refer
-to the introductory slides in the relevant folder.
-
-This repo is a WIP: check back often for updates, documentation, new slides etc.
+Repo containing material for the NYU class (Master of Engineering) I teach on NLP, ML Sys etc. For context on what the class is trying to achieve and, *especially* what is NOT, please refer to the slides in the relevant folder.
 
 Last update: Fall 2021.
 
@@ -31,7 +28,6 @@ As far as ML is concerned, language-related topics are typically covered through
 
 The folder contains some ready-made text files to experiment with some NLP techniques: these corpora are just examples, and everything can be pretty much run in the same fashion if you swap these files (and change the appropriate variables) with other textual data you like better.
 
-
 ### MLSys
 
 This folder contains script covering MLSys concepts: how to organize a ML project, how to publish a model in the cloud etc.. In particular:
@@ -40,20 +36,39 @@ This folder contains script covering MLSys concepts: how to organize a ML projec
 * _serverless_sagemaker_ contains an AWS Lambda endpoint which uses a Sagemaker internal endpoint to serve a scikit-model, previously trained (why two endpoints? Check the slides!).
 * _training_: contains a sequence of scripts taking a program training a regression model and progressively refactoring to follow industry best-practices (i.e. using Metaflow!).
 
-For more info on each of these topics, please see the slides and the sub-sections below.
-
-#### Serverless 101
-
-TBC
-
-#### Serverless Sagemaker
-
-TBC
+For more info on each of these topics, please see the slides and the sub-sections below; make sure you run [Metaflow tutorial](https://metaflow.org/) first if you are not familiar with Metaflow.
 
 #### Training scripts
 
-TBC
+Progression of scripts training the same regression model on synthetica dataset in increasingly better programs, starting from a monolithic implementation and ending with a functionally equivalent DAG-based implementation. In particular: 
 
+* you can run `create_fake_dataset.py` to generate a X,Y dataset, `regression_dataset`;
+* `monolith.py` performs all operation in a long function;
+* `composable.py` breaks up the monolith in smaller functions, one per core functionality, so that now `composable_script` acts as a high-level routine explicitely displaying the logical flow of the program;
+* `small_flow.py` re-factores the functional components of `composable.py` into steps for a Metaflow DAG, which can be run with the usual MF syntax `python small_flow.py run`. Please note that imports of non-standard packages now happen at the relevant steps: since MF decouples code from computation, we want to make sure all steps are as self-contained as possible, dependency-wise.
+* `small_flow_sagemaker.py` is the same as `small_flow.py`, but with an additional step, `deploy_model_to_sagemaker`, showing how the learned model can be first stored to S3, then used to spin up a Sagemaker endpoint, that is an internal AWS endpoint hosting automatically for us the model we just created. Serving this model is more complex than what happens in _Serverless 101_ (see below), so a second Serverless folder hosts the Sagemaker-compatible version of AWS lambda.
+
+#### Serverless 101
+
+The folder is a self-contained AWS Lambda that can use regression parameters learned with any of the training scripts to serve predictions from the cloud:
+
+* `handler.py` contains the business logic, inside the `simple_regression` function. After converting a query parameter into a new _x_, we calculate _y_ using the regression equation, reading the relevant parameters from the environment (see below). 
+* `serverless.yml` is a standard Serverless configuration file, which defines the GET endpoint we are asking AWS to create and run for us, and use `environment` variables to store the beta and intercept learned from training a regression model.
+
+To deploy succeessfully, make sure to have [installed Serverless](https://www.serverless.com/framework/docs/providers/aws/guide/installation), configured with your AWS credentials. Then:
+
+* run `small_flow.py` in the _training_ folder to obtain values for `BETA` and `INTERCEPT` (or whatever linear regression you may want to run on your dataset);
+* change `BETA` and `INTERCEPT` in `serverless.yml` with the values just learned;
+* `cd` into the folder and run: `serverless deploy --aws-profile myProfile`
+* when deployment / update is completed, the terminal will show the cloud url where our model can be reached.
+
+#### Serverless Sagemaker
+
+The folder is a self-contained AWS Lambda that can use a model hosted on Sagemaker, such as the one deployed with `small_flow_sagemaker.py`, to serve prediction from the cloud. Compared to _Serverless 101_, the `handler.py` file here is not using environment variables and an explicit equation, but it is simply "passing over" the input received by the client to the internal Sagemaker endpoint hosting the model (`get_response_from_sagemaker`). 
+
+Also in this case you need Serverless [installed and configured](https://www.serverless.com/framework/docs/providers/aws/guide/installation) to be able to deploy the lambda as a cloud endpoint: once `small_flow_sagemaker.py` is run and the Sagemaker endpoint is live, deploying the lambda itself is done with the usual commands.
+
+Note: Sagemaker endpoints are pretty expensive - if you are not using credits, make sure to delete the endpoint when you are done with your experiments.
 
 ### Notebooks
 
@@ -63,11 +78,13 @@ Please note that notebooks are inherently "exploratory" in nature, so they are g
 Note: most of the dependencies are pretty standard, but some of the "exotic" ones are added with inline 
 statements to make the notebook self-contained.
 
+### Project
+
+TBC
+
 ### Slides
 
-The folder contains slides discussed during the course: while they provide a guide and a general overview of the concepts, the discussions we have during lectures are very important to put the material in the right context. While numbers in the files follow the order of the lectures as they happened in class, after the first intro lecture the NLP and MLSys "curricula" relatively independent.
-
-Note that, with time, links and references may become obsolete despite my best intentions!
+The folder contains slides discussed during the course: while they provide a guide and a general overview of the concepts, the discussions we have during lectures are very important to put the material in the right context After the first intro part, the NLP and MLSys "curricula" relatively independent. Note that, with time, links and references may become obsolete despite my best intentions!
 
 ### Playground
 
@@ -83,10 +100,20 @@ Make sure to set `COMET_API_KEY` and `MY_PROJECT_NAME` as env variables before r
 
 ## Acknowledgments
 
+Thanks to all outstanding people quoted and linked in the slides: this course is possible only because we truly stand on the shoulders of giants. Thanks also to:
+
+* Meninder Purewal, for being such a great, patient, witty co-teacher of this class;
+* Patrick John Chia, for debugging sci-kit on Sagemaker and build the related flow;
+* Ciro Greco, for helping reviewing the NLP slides and greatly improving the scholarly references;
+* Tal Linzen, for sharing some of his NLP teaching ideas with me.
 
 ## Additional materials
-TBC
 
+The two main topics - MLSys and NLP - are huge, and we could obviously just scratch the surface. Since it is impossible to provide extensive references here, I just picked 3 great items to start:
+
+* [Deep Learning with Python](https://www.amazon.com/Learning-Python-Second-Fran%C3%A7ois-Chollet/dp/1617296864): great practical intro to ML concepts and the basics of DL;
+* [Speech and Language Processing](https://web.stanford.edu/~jurafsky/slp3/): a great, modern book on NLP; 
+* [You don't need a bigger boat](https://github.com/jacopotagliabue/you-dont-need-a-bigger-boat): our own fully open source repository showing how state-of-the-art ML systems can be built at scale, component after component.
 
 ## Contacts
 
