@@ -76,20 +76,18 @@ Note: Sagemaker endpoints are pretty expensive - if you are not using credits, m
 
 ### Notebooks
 
-This folder contains Python notebooks that illustrate in Python concepts discussed during the lectures.
-Please note that notebooks are inherently "exploratory" in nature, so they are good for interactivity and speed but they are not always the right tool for rigorous coding. 
+This folder contains Python notebooks that illustrate in Python concepts discussed during the lectures. Please note that notebooks are inherently "exploratory" in nature, so they are good for interactivity and speed but they are not always the right tool for rigorous coding. 
 
-Note: most of the dependencies are pretty standard, but some of the "exotic" ones are added with inline 
-statements to make the notebook self-contained.
+Note: most of the dependencies are pretty standard, but some of the "exotic" ones are added with inline statements to make the notebook self-contained.
 
 ### Project
 
 This folder contains two main files:
 
 * `my_flow.py` is a Metaflow version of the text classification pipeline we explained in class: while not necessarily exhaustive, it contains many of the features that the final course project should display (e.g. comments, qualitative tests, etc.). The flow ends by explictely storing the artifacts from the model we just trained.
-* `my_app.py` shows how to build a minimal Flask app with a `/predict` endpoint serving predictions from the model. Note that the app relies on a small HTML page, while our lecture described an endpoint as a purely machine-to-machine communication (that is, outputting a JSON): both are fine for the final project, as long as you understand what the app is doing.
+* `my_app.py` shows how to build a minimal Flask app serving predictions from the trained model. Note that the app relies on a small HTML page, while our lecture described an endpoint as a purely machine-to-machine communication (that is, outputting a JSON): both are fine for the final project, as long as you understand what the app is doing.
 
-You can run both by creating a separate environment with the provided `requirements.txt` (make sure your Metaflow setup is correct, of course).
+You can run both (`my_flow.py` first) by creating a separate environment with the provided `requirements.txt` (make sure your Metaflow setup is correct, of course).
 
 ### Slides
 
@@ -110,9 +108,9 @@ Make sure to set `COMET_API_KEY` and `MY_PROJECT_NAME` as env variables before r
 
 Thanks to all outstanding people quoted and linked in the slides: this course is possible only because we truly stand on the shoulders of giants. Thanks also to:
 
-* Meninder Purewal, for being such a great, patient, witty co-teacher of this class;
-* Patrick John Chia, for debugging sci-kit on Sagemaker and build the related flow;
-* Ciro Greco, for helping reviewing the NLP slides and greatly improving the scholarly references;
+* Meninder Purewal, for being such a great, patient, witty co-teacher;
+* Patrick John Chia, for debugging sci-kit on Sagemaker and building the related flow;
+* Ciro Greco, for helping with the NLP slides and greatly improving the scholarly references;
 * Federico Bianchi and Tal Linzen, for sharing their wisdom in teaching NLP.
 
 ## Additional materials
