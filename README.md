@@ -1,4 +1,4 @@
-# FREE_7773
+# FREE_7773_2021
 Repo containing material for the NYU class (Master of Engineering) I teach on NLP, ML Sys etc. For context on what the class is trying to achieve and, *especially* what is NOT, please refer to the slides in the relevant folder.
 
 Last update: December 2021.
