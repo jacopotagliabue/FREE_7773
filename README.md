@@ -3,6 +3,8 @@ Repo containing material for the NYU class (Master of Engineering) I teach on NL
 
 Last update: December 2021.
 
+IMPORTANT: the 2022 edition is now [available](https://github.com/jacopotagliabue/MLSys-NYU-2022), with some significant changes. Check it out!
+
 Notes:
 
 * for unforseen issues with user permissions in the AWS Academy, the original serverless deployment we explained for MLSys could not be used. While the code is still in this repo for someone who wants to try with their own account, a local Flask app serving a model is provided as an alternative in the _project_ folder.
